@@ -3,28 +3,76 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-function TodoList(props) {
-    let todos = [1, 2, 3].map((item) => {
-        return <TodoItem value={item} isChecked={item % 2 === 0}/>;
-    });
+const FilterEnum = ['All', 'Active', 'Completed']
 
-    return (
-        <div>
-            <h1>To do list</h1>
-            <AddTodo/>
-            <ul>{todos}</ul>
-            <TodoFilter/>
-        </div>
-    )
+class TodoList extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleAddTodo = this.handleAddTodo.bind(this);
+
+        this.state = {
+            todos:[],
+            filter: FilterEnum[0],
+        }
+    }
+
+    handleAddTodo(todoText) {
+        let todos = this.state.todos.splice(0);
+        todos.push({value: todoText});
+        this.setState({
+            todos: todos
+        });
+    }
+
+
+    render() {
+        let todos = this.state.todos.map((item, index) => {
+            return <TodoItem value={item.value} isChecked={item.isChecked} key={index} />;
+        });
+
+        return (
+            <div>
+                <h1>To do list</h1>
+                <AddTodo onTodoAdd={this.handleAddTodo}/>
+                <ul>{todos}</ul>
+                <TodoFilter/>
+            </div>
+        )
+    }
 }
 
-function AddTodo(props) {
-    return (
-        <div>
-            <input type="text"/>
-            <input type="button" value="Add Todo"/>
-        </div>
-    );
+class AddTodo extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleAddTodo = this.handleAddTodo.bind(this);
+
+        this.state = {
+            newTodo: '',
+        }
+    }
+
+    handleTextChange(event) {
+        this.setState({
+            newTodo: event.target.value,
+        })
+    }
+
+    handleAddTodo() {
+        this.props.onTodoAdd(this.state.newTodo);
+    }
+
+    render() {
+        return (
+            <div>
+                <input type="text" value={this.state.newTodo} onChange={this.handleTextChange}/>
+                <input type="button" value="Add Todo" onClick={this.handleAddTodo}/>
+            </div>
+        );
+    }
+
 }
 
 function TodoItem(props) {
@@ -42,13 +90,13 @@ function TodoFilter(props) {
     return (
         <div>
             <label>
-                <input type="radio" name="filter" value="All" defaultChecked /> All
+                <input type="radio" name="filter" value={FilterEnum[0]} defaultChecked /> All
             </label>
             <label>
-                <input type="radio" name="filter" value="Active"/> Active
+                <input type="radio" name="filter" value={FilterEnum[1]}/> Active
             </label>
             <label>
-                <input type="radio" name="filter" value="Completed"/> Completed
+                <input type="radio" name="filter" value={FilterEnum[2]}/> Completed
             </label>
         </div>
     );
