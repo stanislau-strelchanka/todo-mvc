@@ -10,6 +10,7 @@ class TodoList extends React.Component {
     constructor(props) {
         super(props);
         this.handleAddTodo = this.handleAddTodo.bind(this);
+        this.handleTodoClicked = this.handleTodoClicked.bind(this);
 
         this.state = {
             todos:[],
@@ -25,10 +26,18 @@ class TodoList extends React.Component {
         });
     }
 
+    handleTodoClicked(index, isChecked) {
+        let todos = this.state.todos.splice(0)
+        todos[index].isChecked = isChecked;
+        this.setState({
+            todos:todos,
+        })
+    }
 
     render() {
         let todos = this.state.todos.map((item, index) => {
-            return <TodoItem value={item.value} isChecked={item.isChecked} key={index} />;
+            return <TodoItem value={item.value} isChecked={item.isChecked} key={index} index={index}
+                             onTodoClicked={this.handleTodoClicked}/>;
         });
 
         return (
@@ -62,6 +71,7 @@ class AddTodo extends React.Component {
 
     handleAddTodo() {
         this.props.onTodoAdd(this.state.newTodo);
+        this.setState({newTodo: ''});
     }
 
     render() {
@@ -75,15 +85,27 @@ class AddTodo extends React.Component {
 
 }
 
-function TodoItem(props) {
-    return (
-        <li>
-            <label>
-                {props.value}
-                <input type="checkbox" checked={props.isChecked} />
-            </label>
-        </li>
-    );
+class TodoItem extends React.Component {
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+    }
+
+    handleClick(event) {
+        this.props.onTodoClicked(this.props.index, event.target.checked);
+    }
+
+    render() {
+        return (
+            <li>
+                <label>
+                    {this.props.value}
+                    <input type="checkbox" checked={this.props.isChecked} onClick={this.handleClick}/>
+                </label>
+            </li>
+        );
+    }
+
 }
 
 function TodoFilter(props) {
