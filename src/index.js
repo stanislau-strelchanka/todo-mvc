@@ -3,7 +3,7 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
 
-const FilterEnum = ['All', 'Active', 'Completed']
+const FilterEnum = ['All', 'Active', 'Completed'];
 
 class TodoList extends React.Component {
 
@@ -11,6 +11,7 @@ class TodoList extends React.Component {
         super(props);
         this.handleAddTodo = this.handleAddTodo.bind(this);
         this.handleTodoClicked = this.handleTodoClicked.bind(this);
+        this.handleFilterClicked = this.handleFilterClicked.bind(this);
 
         this.state = {
             todos:[],
@@ -27,17 +28,30 @@ class TodoList extends React.Component {
     }
 
     handleTodoClicked(index, isChecked) {
-        let todos = this.state.todos.splice(0)
+        let todos = this.state.todos.splice(0);
         todos[index].isChecked = isChecked;
         this.setState({
-            todos:todos,
+            todos: todos,
+        })
+    }
+
+    handleFilterClicked(filter) {
+        this.setState({
+            filter: filter,
         })
     }
 
     render() {
         let todos = this.state.todos.map((item, index) => {
-            return <TodoItem value={item.value} isChecked={item.isChecked} key={index} index={index}
-                             onTodoClicked={this.handleTodoClicked}/>;
+            let shouldReturnItem = true;
+            if (this.state.filter === 'Active') {
+                shouldReturnItem = !item.isChecked;
+            } else if (this.state.filter === 'Completed'){
+                shouldReturnItem = item.isChecked;
+            }
+
+            return shouldReturnItem ? <TodoItem value={item.value} isChecked={item.isChecked} key={index} index={index}
+                             onTodoClicked={this.handleTodoClicked} /> : null;
         });
 
         return (
@@ -45,7 +59,7 @@ class TodoList extends React.Component {
                 <h1>To do list</h1>
                 <AddTodo onTodoAdd={this.handleAddTodo}/>
                 <ul>{todos}</ul>
-                <TodoFilter/>
+                <TodoFilter onFilterClicked={this.handleFilterClicked} selectedFilter={this.state.filter} />
             </div>
         )
     }
@@ -105,23 +119,45 @@ class TodoItem extends React.Component {
             </li>
         );
     }
-
 }
 
-function TodoFilter(props) {
-    return (
-        <div>
+class TodoFilter extends React.Component {
+
+    constructor(props) {
+        super(props);
+
+        this.handleFilterClick = this.handleFilterClick.bind(this);
+        this.createRadio = this.createRadio.bind(this);
+    }
+
+    handleFilterClick(i) {
+        this.props.onFilterClicked(FilterEnum[i]);
+    }
+
+    createRadio(i) {
+        let filter = FilterEnum[i];
+        let isChecked = filter === this.props.selectedFilter;
+        return (
             <label>
-                <input type="radio" name="filter" value={FilterEnum[0]} defaultChecked /> All
+                <input key={i} type="radio" name="filter" value={filter} defaultChecked={isChecked}
+                       onClick={() => this.handleFilterClick(i)}/> {filter}
             </label>
-            <label>
-                <input type="radio" name="filter" value={FilterEnum[1]}/> Active
-            </label>
-            <label>
-                <input type="radio" name="filter" value={FilterEnum[2]}/> Completed
-            </label>
-        </div>
-    );
+        );
+    }
+
+    render() {
+        const radios = [];
+        for (let i = 0; i < FilterEnum.length; i++) {
+            radios.push(this.createRadio(i))
+        }
+
+        return (
+            <div>
+                {radios}
+            </div>
+        );
+    }
+
 }
 
 ReactDOM.render(<TodoList/>, document.getElementById('root'));
