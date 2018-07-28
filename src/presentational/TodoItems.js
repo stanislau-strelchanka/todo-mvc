@@ -8,7 +8,6 @@ const TodoItems = function (props) {
         todoUIElements.push(<TodoItem isChecked={todo.isChecked} value={todo.value} key={todo.id} id={todo.id}
                              onClick={props.onTodoClick}/>)
     }
-
     return (
         <ul>
             {todoUIElements}

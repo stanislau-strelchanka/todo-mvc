@@ -23,25 +23,12 @@ class App extends React.Component {
         this.setState({visibilityFilter: filterValue})
     }
 
-    handleTodoClick(id) {
-        let todos = this.state.todos.splice(0);
-        let todo = todos.find(i => i.id === id);
-        todo.isChecked = !todo.isChecked;
-        this.setState({todos: todos});
-    }
-
-    handleTodoAdd(value, id) {
-        this.setState(
-            { todos: this.state.todos.concat({ value:value, id:id }) }
-        )
-    }
-
     render() {
         return (
             <div>
-                <AddTodo store={this.props.store} onTodoAdd={this.handleTodoAdd}/>
-                <VisibleTodoItems store={this.props.store} visibilityFilter={this.state.visibilityFilter} todos={this.state.todos} onTodoClick={this.handleTodoClick}/>
-                <FilterLinkPanel store={this.props.store} visibilityFilter={this.state.visibilityFilter}  onFilterLinkClick={this.handleFilterClick}/>
+                <AddTodo/>
+                <VisibleTodoItems />
+                <FilterLinkPanel visibilityFilter={this.state.visibilityFilter}  onFilterLinkClick={this.handleFilterClick}/>
             </div>
         )
     }

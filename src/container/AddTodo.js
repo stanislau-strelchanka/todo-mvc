@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react';
+import { addTodo } from '../action';
 
 class AddTodo extends React.Component {
 
@@ -9,7 +10,6 @@ class AddTodo extends React.Component {
 
         this.state = {
             newTodo: '',
-            nextId: 0,
         }
     }
 
@@ -20,11 +20,10 @@ class AddTodo extends React.Component {
     }
 
     handleAddTodo() {
-        this.props.onTodoAdd(this.state.newTodo, this.state.nextId);
+        this.props.store.dispatch(addTodo(this.state.newTodo));
 
         this.setState({
             newTodo: '',
-            nextId: this.state.nextId + 1,
         });
     }
 
