@@ -1,16 +1,20 @@
 import React from 'react';
-import FilterLinkPanel from './FilterLinkPanel';
 import FilterEnumeration from '../util';
-import VisibleTodoItems from "../container/VisibleTodoItems";
+import FilterLinkPanel from './FilterLinkPanel';
+import VisibleTodoItems from '../container/VisibleTodoItems';
+import AddTodo from '../container/AddTodo';
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.handleFilterClick = this.handleFilterClick.bind(this);
         this.handleTodoClick = this.handleTodoClick.bind(this);
+        this.handleTodoAdd = this.handleTodoAdd.bind(this);
+
         this.state = {
-            todos:[ {value:'eat', isChecked:false}, {value:'basic app', isChecked:false}, {value:'name stas', isChecked:true}],
+            todos:[],
             visibilityFilter: FilterEnumeration.All,
         }
     }
@@ -19,21 +23,25 @@ class App extends React.Component {
         this.setState({visibilityFilter: filterValue})
     }
 
-    handleTodoClick(index) {
+    handleTodoClick(id) {
         let todos = this.state.todos.splice(0);
-        let todo = todos[index];
+        let todo = todos.find(i => i.id === id);
         todo.isChecked = !todo.isChecked;
         this.setState({todos: todos});
+    }
+
+    handleTodoAdd(value, id) {
+        this.setState(
+            { todos: this.state.todos.concat({ value:value, id:id }) }
+        )
     }
 
     render() {
         return (
             <div>
-                {/*
-            add todo
-            */}
+            <AddTodo onTodoAdd={this.handleTodoAdd}/>
             <VisibleTodoItems visibilityFilter={this.state.visibilityFilter} todos={this.state.todos} onTodoClick={this.handleTodoClick}/>
-            <FilterLinkPanel onFilterLinkClick={this.handleFilterClick}/>
+            <FilterLinkPanel visibilityFilter={this.state.visibilityFilter} onFilterLinkClick={this.handleFilterClick}/>
             </div>
         )
     }

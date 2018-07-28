@@ -6,7 +6,7 @@ const TodoItem = function (props) {
             <label>
                 {props.value}
                 <input type="checkbox" checked={props.isChecked}
-                       onClick={() => props.onClick(props.index)} />
+                       onClick={() => props.onClick(props.id)} />
             </label>
         </li>
     );
