@@ -24,7 +24,7 @@ class AddTodo extends React.Component {
 
         this.setState({
             newTodo: '',
-            nextId: ++this.state.nextId,
+            nextId: this.state.nextId + 1,
         });
     }
 
