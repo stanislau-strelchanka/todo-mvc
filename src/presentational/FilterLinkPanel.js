@@ -6,9 +6,9 @@ const FilterLinkPanel = function(props) {
 
     return (
         <div>
-            <FilterLink onFilterClick={props.onFilterLinkClick} visibilityFilter={props.visibilityFilter} filter={FilterEnumeration.All}/>
-            <FilterLink onFilterClick={props.onFilterLinkClick} visibilityFilter={props.visibilityFilter} filter={FilterEnumeration.Active}/>
-            <FilterLink onFilterClick={props.onFilterLinkClick} visibilityFilter={props.visibilityFilter} filter={FilterEnumeration.Completed}/>
+            <FilterLink filter={FilterEnumeration.All}/>
+            <FilterLink filter={FilterEnumeration.Active}/>
+            <FilterLink filter={FilterEnumeration.Completed}/>
         </div>
     )
 };

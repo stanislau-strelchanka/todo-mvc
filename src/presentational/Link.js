@@ -4,10 +4,10 @@ const Link = function(props) {
 
     return (
         <label>
-            <input type="radio" name="filter" value={props.value} defaultChecked={props.isChecked}
-                   onClick={() => props.onClick(props.value)}
+            <input type="radio" name="filter" value={props.filter} defaultChecked={props.isChecked}
+                   onClick={() => props.onClick(props.filter)}
             />
-            {props.value}
+            {props.filter}
         </label>
     );
 };

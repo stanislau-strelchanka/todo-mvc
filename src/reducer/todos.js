@@ -7,7 +7,7 @@ export const todos = function (state = [], action) {
             });
         case 'TOGGLE_TODO':
             let newState = state.splice(0);
-            let todo = newState.find(i => i.id === id);
+            let todo = newState.find(i => i.id === action.id);
             todo.isChecked = !todo.isChecked;
             return newState;
         default:
