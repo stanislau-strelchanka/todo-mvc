@@ -1,18 +1,35 @@
 import React from 'react'
+import { connect } from 'react-redux'
+import { toggleTodo } from '../action'
 import TodoItems from '../presentational/TodoItems';
 import FilterEnum from '../util';
 
-const VisibleTodoItems = function (props) {
-    switch (props.visibilityFilter) {
+const getVisibleTodoItems = function (todos, filter) {
+    switch (filter) {
         case FilterEnum.All:
-            return <TodoItems todos={props.todos} onTodoClick={props.onTodoClick}/>;
+            return todos
         case FilterEnum.Active:
-            return <TodoItems todos={props.todos.filter(i => !i.isChecked)} onTodoClick={props.onTodoClick}/>;
+            return todos.filter(i => !i.isChecked);
         case FilterEnum.Completed:
-            return <TodoItems todos={props.todos.filter(i => i.isChecked)} onTodoClick={props.onTodoClick}/> ;
+            return todos.filter(i => i.isChecked);
         default:
-            return <TodoItems todos={props.todos}/>;
+            return todos;
     }
 };
 
-export default VisibleTodoItems;
+const mapStateToProps = function (state) {
+    return {
+        todos: getVisibleTodoItems(state.todos)
+    }
+};
+
+const mapDispatchToProps = function (dispatch) {
+    return {
+        onTodoClick: id => { dispatch( toggleTodo(id) ) },
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(TodoItems);

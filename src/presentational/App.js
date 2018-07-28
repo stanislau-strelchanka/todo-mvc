@@ -39,9 +39,9 @@ class App extends React.Component {
     render() {
         return (
             <div>
-                <AddTodo onTodoAdd={this.handleTodoAdd}/>
-                <VisibleTodoItems visibilityFilter={this.state.visibilityFilter} todos={this.state.todos} onTodoClick={this.handleTodoClick}/>
-                <FilterLinkPanel visibilityFilter={this.state.visibilityFilter}  onFilterLinkClick={this.handleFilterClick}/>
+                <AddTodo store={this.props.store} onTodoAdd={this.handleTodoAdd}/>
+                <VisibleTodoItems store={this.props.store} visibilityFilter={this.state.visibilityFilter} todos={this.state.todos} onTodoClick={this.handleTodoClick}/>
+                <FilterLinkPanel store={this.props.store} visibilityFilter={this.state.visibilityFilter}  onFilterLinkClick={this.handleFilterClick}/>
             </div>
         )
     }
