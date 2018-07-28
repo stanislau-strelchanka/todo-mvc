@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import App from './container/App';
+import App from './presentational/App';
 import FilterEnumeration from './util';
 
 const FilterEnum = ['All', 'Active', 'Completed']
