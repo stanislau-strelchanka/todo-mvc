@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
+import App from './presentational/App';
 
 const FilterEnum = ['All', 'Active', 'Completed'];
 
@@ -160,5 +161,5 @@ class TodoFilter extends React.Component {
 
 }
 
-ReactDOM.render(<TodoList/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'));
 registerServiceWorker();
