@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import registerServiceWorker from './registerServiceWorker';
-import App from './presentational/App';
+import App from './container/App';
+import FilterEnumeration from './util';
 
-const FilterEnum = ['All', 'Active', 'Completed'];
-
+const FilterEnum = ['All', 'Active', 'Completed']
 class TodoList extends React.Component {
 
     constructor(props) {
